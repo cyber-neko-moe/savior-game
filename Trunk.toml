@@ -1,0 +1,10 @@
+# Trunk bundler configuration
+# Docs: https://trunkrs.dev/configuration/
+
+[serve]
+address = "127.0.0.1"
+port = 8080
+open = false          # set to true to auto-open browser on `trunk serve`
+
+[build]
+filehash = false # predictable output names (no content hash suffix)

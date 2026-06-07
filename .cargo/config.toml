@@ -1,0 +1,16 @@
+# ── Cargo build configuration ────────────────────────────────────────────────
+
+# Wasm target: enable unstable web_sys APIs required by Bevy's winit backend.
+[target.wasm32-unknown-unknown]
+rustflags = ["--cfg=web_sys_unstable_apis"]
+
+# ── Native fast-link settings (optional, uncomment if tools are installed) ────
+
+# Windows – use the built-in LLVM linker (ships with the Rust toolchain).
+[target.x86_64-pc-windows-msvc]
+linker = "rust-lld"
+
+# Linux – use LLD for faster incremental links (requires: apt install lld).
+[target.x86_64-unknown-linux-gnu]
+linker = "clang"
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]

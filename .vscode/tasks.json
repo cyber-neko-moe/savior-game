@@ -1,0 +1,57 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "run (native)",
+      "type": "shell",
+      "command": "cargo run",
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": "$rustc",
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "build (native)",
+      "type": "shell",
+      "command": "cargo build",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": "$rustc"
+    },
+    {
+      "label": "check",
+      "type": "shell",
+      "command": "cargo check",
+      "problemMatcher": "$rustc"
+    },
+    {
+      "label": "serve (web – dev)",
+      "type": "shell",
+      "command": "trunk serve",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^error",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*trunk.*",
+          "endsPattern":   "^.*Serving.*127\\.0\\.0\\.1.*"
+        }
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "build (web – release)",
+      "type": "shell",
+      "command": "trunk build --release",
+      "group": "build",
+      "problemMatcher": "$rustc"
+    },
+    {
+      "label": "add wasm target",
+      "type": "shell",
+      "command": "rustup target add wasm32-unknown-unknown",
+      "problemMatcher": []
+    }
+  ]
+}

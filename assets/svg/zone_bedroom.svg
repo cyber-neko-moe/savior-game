@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420">
+  <rect id="zone_bg" x="10" y="10" width="620" height="400" fill="#1b2230" stroke="#9aa5ce" stroke-width="2"/>
+  <rect id="furniture_bed" x="40" y="40" width="280" height="180" fill="#3d4a64"/>
+  <rect id="furniture_desk" x="360" y="50" width="220" height="130" fill="#556079"/>
+  <rect id="furniture_window" x="390" y="250" width="180" height="120" fill="#4d6c87"/>
+
+  <circle id="slot_bed" cx="180" cy="130" r="18" fill="#8be9fd"/>
+  <circle id="slot_desk" cx="470" cy="115" r="18" fill="#8be9fd"/>
+  <circle id="slot_window" cx="480" cy="310" r="18" fill="#8be9fd"/>
+</svg>

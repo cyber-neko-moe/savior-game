@@ -1,33 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Savior Game</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #0a0a0a;
-    }
-    /* Bevy creates a <canvas> and appends it to <body>.
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Savior Game</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #0a0a0a;
+      }
+      /* Bevy creates a <canvas> and appends it to <body>.
        Force it to fill the viewport. */
-    canvas {
-      display: block;
-      width: 100vw !important;
-      height: 100vh !important;
-    }
-  </style>
-  <!--
+      canvas {
+        display: block;
+        width: 100vw !important;
+        height: 100vh !important;
+      }
+    </style>
+    <!--
     Trunk directives:
       • rel="rust"      – compile + link the Wasm binary
       • rel="copy-dir"  – copy assets/ into the dist output so Bevy can load them
   -->
-  <link data-trunk rel="rust" data-wasm-opt="z" />
-  <link data-trunk rel="copy-dir" href="assets" />
-</head>
-<body>
-</body>
+    <link data-trunk rel="rust" data-wasm-opt="z" />
+    <link data-trunk rel="copy-dir" href="assets" />
+  </head>
+  <body></body>
 </html>

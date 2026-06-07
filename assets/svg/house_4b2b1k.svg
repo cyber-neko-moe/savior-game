@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 520">
+  <rect id="outline" x="10" y="10" width="800" height="500" fill="#121212" stroke="#888" stroke-width="2"/>
+
+  <rect id="room_bed_1" x="30" y="30" width="180" height="200" fill="#2f3d4d" stroke="#cdd6f4"/>
+  <rect id="room_bed_2" x="230" y="30" width="180" height="200" fill="#31495c" stroke="#cdd6f4"/>
+  <rect id="room_bed_3" x="430" y="30" width="180" height="200" fill="#334f62" stroke="#cdd6f4"/>
+  <rect id="room_bed_4" x="630" y="30" width="160" height="200" fill="#35566b" stroke="#cdd6f4"/>
+
+  <rect id="room_bath_1" x="30" y="260" width="180" height="120" fill="#5d4a66" stroke="#f5c2e7"/>
+  <rect id="room_bath_2" x="230" y="260" width="180" height="120" fill="#664f70" stroke="#f5c2e7"/>
+  <rect id="room_kitchen_1" x="430" y="260" width="360" height="220" fill="#5f5336" stroke="#f9e2af"/>
+</svg>

@@ -12,6 +12,7 @@ impl Plugin for ProtocolPlugin {
     fn build(&self, app: &mut App) {
         app.add_message::<GameAction>()
             .insert_resource(GameLog::default())
+            .insert_resource(PlayerStatus::default())
             .add_systems(Startup, setup_game_protocol)
             .add_systems(
                 Update,
@@ -125,6 +126,29 @@ impl UiSelection {
 #[derive(Resource, Default, Debug, Clone)]
 pub struct GameLog {
     pub entries: Vec<String>,
+}
+
+#[derive(Resource, Debug, Clone)]
+pub struct PlayerStatus {
+    pub name: String,
+    pub avatar: String,
+    pub hp: u8,
+    pub stamina: u8,
+    pub condition: String,
+    pub inventory: Vec<ItemDef>,
+}
+
+impl Default for PlayerStatus {
+    fn default() -> Self {
+        Self {
+            name: "Operator".to_string(),
+            avatar: "[@]".to_string(),
+            hp: 94,
+            stamina: 81,
+            condition: "Focused".to_string(),
+            inventory: Vec::new(),
+        }
+    }
 }
 
 impl GameLog {
@@ -375,6 +399,7 @@ fn demo_kitchen_zone(id: &str, label: &str, temp_c: f32, humidity_pct: f32, hp: 
 fn apply_game_actions(
     mut actions: MessageReader<GameAction>,
     mut protocol: ResMut<GameProtocol>,
+    mut player: ResMut<PlayerStatus>,
     selection: Res<UiSelection>,
     mut log: ResMut<GameLog>,
 ) {
@@ -398,6 +423,7 @@ fn apply_game_actions(
                 {
                     if let Some(item) = slot.items.first().cloned() {
                         slot.items.remove(0);
+                        player.inventory.push(item.clone());
                         log.push(format!(
                             "Looted [{}] {} from {}",
                             item.kind, item.name, slot.name

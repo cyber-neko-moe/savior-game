@@ -2,7 +2,9 @@ use bevy::prelude::*;
 use bevy_egui::{EguiContexts, EguiPrimaryContextPass, egui};
 
 use crate::game::GameState;
-use crate::game::protocol::{GameAction, GameLog, GameProtocol, SvgCatalog, UiSelection};
+use crate::game::protocol::{
+    GameAction, GameLog, GameProtocol, PlayerStatus, SvgCatalog, UiSelection,
+};
 use crate::game::svg::{SvgEntityKind, SvgInteractionState, SvgRenderCache};
 
 pub struct UiPlugin;
@@ -65,6 +67,7 @@ fn in_game_ui(
     mut selection: ResMut<UiSelection>,
     mut actions: MessageWriter<GameAction>,
     log: Res<GameLog>,
+    player: Res<PlayerStatus>,
     mut next_state: ResMut<NextState<GameState>>,
 ) -> Result {
     let ctx = contexts.ctx_mut()?;
@@ -82,9 +85,16 @@ fn in_game_ui(
         });
     });
 
+    egui::TopBottomPanel::bottom("panel_player_row")
+        .resizable(false)
+        .exact_height(188.0)
+        .show(ctx, |ui| {
+            draw_player_row(ui, &player);
+        });
+
     egui::SidePanel::left("panel_map")
         .resizable(true)
-        .default_width(290.0)
+        .default_width(360.0)
         .show(ctx, |ui| {
             ui.heading("Map");
             ui.label(format!(
@@ -104,7 +114,7 @@ fn in_game_ui(
 
     egui::SidePanel::right("panel_actions")
         .resizable(true)
-        .default_width(320.0)
+        .default_width(390.0)
         .show(ctx, |ui| {
             ui.heading("Actions");
             draw_action_panel(ui, &protocol, &selection, &interaction_state, &mut actions);
@@ -658,6 +668,81 @@ fn draw_action_panel(
     } else {
         ui.label("Select a slot from the middle panel to enable actions.");
     }
+}
+
+fn draw_player_row(ui: &mut egui::Ui, player: &PlayerStatus) {
+    const INV_ROWS: usize = 3;
+    const INV_COLS: usize = 7;
+
+    ui.horizontal(|ui| {
+        ui.group(|ui| {
+            ui.set_min_width(120.0);
+            ui.heading(&player.avatar);
+            ui.label(&player.name);
+            ui.small("Avatar");
+        });
+
+        ui.group(|ui| {
+            ui.set_min_width(220.0);
+            ui.label(format!("HP: {}", player.hp));
+            ui.add(
+                egui::ProgressBar::new(player.hp as f32 / 100.0)
+                    .desired_width(170.0)
+                    .text("Health"),
+            );
+            ui.label(format!("Stamina: {}", player.stamina));
+            ui.add(
+                egui::ProgressBar::new(player.stamina as f32 / 100.0)
+                    .desired_width(170.0)
+                    .text("Stamina"),
+            );
+            ui.small(format!("Condition: {}", player.condition));
+        });
+
+        ui.group(|ui| {
+            ui.set_min_width(660.0);
+            ui.label("Inventory (3x7)");
+            egui::Grid::new("inventory_grid")
+                .num_columns(INV_COLS)
+                .spacing(egui::vec2(6.0, 6.0))
+                .show(ui, |ui| {
+                    for row in 0..INV_ROWS {
+                        for col in 0..INV_COLS {
+                            let idx = row * INV_COLS + col;
+                            let item = player.inventory.get(idx);
+                            let (label, color) = if let Some(item) = item {
+                                (
+                                    format!("{}\nQ{}", item.name, item.quality),
+                                    egui::Color32::from_rgb(46, 56, 40),
+                                )
+                            } else {
+                                (
+                                    format!("[{}]", idx + 1),
+                                    egui::Color32::from_rgb(32, 32, 32),
+                                )
+                            };
+
+                            egui::Frame::new()
+                                .fill(color)
+                                .stroke(egui::Stroke::new(1.0, egui::Color32::from_gray(100)))
+                                .corner_radius(4.0)
+                                .inner_margin(egui::Margin::same(4))
+                                .show(ui, |ui| {
+                                    ui.add_sized(
+                                        egui::vec2(78.0, 42.0),
+                                        egui::Label::new(
+                                            egui::RichText::new(label)
+                                                .size(11.0)
+                                                .color(egui::Color32::WHITE),
+                                        ),
+                                    );
+                                });
+                        }
+                        ui.end_row();
+                    }
+                });
+        });
+    });
 }
 
 fn map_rect(

@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy::window::PresentMode;
 use bevy_egui::EguiPlugin;
 
 pub mod debug_ui;
@@ -17,6 +18,8 @@ impl Plugin for GamePlugin {
         app.add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
                 title: "Savior Game".into(),
+                // Allow rendering above monitor refresh for profiling/high-FPS targets.
+                present_mode: PresentMode::AutoNoVsync,
                 ..default()
             }),
             ..default()
